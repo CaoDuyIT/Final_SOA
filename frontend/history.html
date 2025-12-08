@@ -29,63 +29,92 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Booking ID</th>
                             <th>Dates</th>
                             <th>Room</th>
                             <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td>BK-12345</td>
-                            <td>2025-12-10 to 2025-12-12</td>
-                            <td>Deluxe Double Room</td>
-                            <td>Completed</td>
-                            <td class="actions">
-                                <button class="btn edit-btn review-btn">Leave a Review</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>BK-67890</td>
-                            <td>2026-01-05 to 2026-01-08</td>
-                            <td>Family Suite</td>
-                            <td>Confirmed</td>
-                            <td class="actions">
-                                <!-- No action for upcoming stays -->
-                            </td>
-                        </tr>
-                    </tbody>
+                    <tbody></tbody>
                 </table>
             </div>
         </main>
     </div>
 
+    <!-- Overlay -->
+    <div id="review-overlay" class="modal-overlay"></div>
+
     <!-- Review Modal -->
-    <div id="review-modal" class="modal-container">
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Leave a Review</h2>
-                    <button class="close-btn">&times;</button>
-                </div>
-                <form id="review-form">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <label for="rating">Rating (1-5)</label>
-                            <input type="number" id="rating" min="1" max="5" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="review-text">Your Experience</label>
-                            <textarea id="review-text" rows="4" required></textarea>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Submit Review</button>
-                    </div>
-                </form>
-            </div>
+    <div id="review-modal" class="modal-content" style="display: none;">
+        <div class="modal-header">
+            <h2>Write a Review</h2>
+            <button class="close-btn" id="close-review">&times;</button>
         </div>
+
+        <form id="review-form">
+            <div class="modal-body">
+
+                <!-- Rating Stars -->
+                <div class="form-group rating-group">
+                    <label>Rating</label>
+                    <div class="stars">
+                        <i class="star" data-value="1">&#9733;</i>
+                        <i class="star" data-value="2">&#9733;</i>
+                        <i class="star" data-value="3">&#9733;</i>
+                        <i class="star" data-value="4">&#9733;</i>
+                        <i class="star" data-value="5">&#9733;</i>
+                    </div>
+                    <input type="hidden" id="rating" required>
+                </div>
+
+                <!-- Review Text -->
+                <div class="form-group">
+                    <label for="review-text">Your Experience</label>
+                    <textarea id="review-text" rows="3" required></textarea>
+                </div>
+
+                <!-- Optional Issue Report -->
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="report-check">
+                        Báo cáo sự cố (optional)
+                    </label>
+                </div>
+
+                <div class="form-group" id="issue-box" style="display: none;">
+                    <label for="issue-text">Mô tả sự cố</label>
+                    <textarea id="issue-text" rows="2" placeholder="Ví dụ: Điều hòa hỏng, nước bị rò..." ></textarea>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Submit Review</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Issue Modal -->
+    <div id="issue-overlay" class="modal-overlay"></div>
+
+    <div id="issue-modal" class="modal-content" style="display:none;">
+        <div class="modal-header">
+            <h2>Report an Issue</h2>
+            <button class="close-btn" id="close-issue">&times;</button>
+        </div>
+
+        <form id="issue-form">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="issue-text">Describe the issue</label>
+                    <textarea id="issue-text" rows="3" placeholder="Ví dụ: Máy lạnh không hoạt động..." required></textarea>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-danger">Submit Report</button>
+            </div>
+        </form>
     </div>
 
     <script src="js/history.js"></script>

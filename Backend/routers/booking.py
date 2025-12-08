@@ -3,6 +3,7 @@ from models import RoomsBooking
 from rooms_service import get_rooms_available
 import datetime
 from db_connection import get_db
+from auth_service import get_current_customer_id
 
 booking_router = APIRouter(prefix="/booking", tags=["Booking"])
 
@@ -74,3 +75,34 @@ async def create_booking(request: RoomsBooking, db=Depends(get_db)):
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+@booking_router.get("/booking-history")
+def get_booking_history(
+    customer_id: int = Depends(get_current_customer_id),
+    db=Depends(get_db)
+):
+    try:
+        with db.cursor() as cursor:
+            sql = """
+                SELECT 
+                    t.TransactionID as id, 
+                    c.FullName as guestName, 
+                    c.PhoneNumber as phone,
+                    r.RoomID,
+                    r.RoomNumber as roomNumber, 
+                    rt.Name as roomType, 
+                    t.Status as status, 
+                    t.CreateAt as bookingDate
+                FROM `Transaction` t
+                JOIN Customer c ON t.CustomerID = c.CustomerID
+                JOIN Room r ON t.RoomID = r.RoomID
+                JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID
+                WHERE t.CustomerID = %s
+                AND t.Status = "Paid"
+                ORDER BY t.CreateAt DESC
+            """
+            cursor.execute(sql, (customer_id,))
+            bookings = cursor.fetchall()
+            return bookings
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")

@@ -7,6 +7,7 @@ class User(BaseModel):
     phonenumber: str
     role_id: int = 1
     disabled: bool | None = None
+    customer_id: int | None = None   
 
 class UserInDB(User):
     hashed_password: str
@@ -49,3 +50,25 @@ class RoomsBooking(BaseModel):
 class LoginRequest(BaseModel):
     username: str
     password: str
+
+# ========= History Models =========
+class BookingHistory(BaseModel):
+    TransactionID: int
+    RoomNumber: str
+    RoomType: str
+    Status: str
+    BookingDate: str
+
+# ========= Reviews Models =========
+class ReviewCreate(BaseModel):
+    transaction_id: int
+    rating: int
+    comment: str
+
+# ============ Incident =================
+class IncidentCreate(BaseModel):
+    transaction_id: int
+    description: str
+
+class IncidentUpdate(BaseModel):
+    status: str

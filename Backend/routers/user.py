@@ -29,3 +29,4 @@ async def add_customer(customer: UserInDB, db=Depends(get_db)):
     finally:
         conn.close()
 
+    

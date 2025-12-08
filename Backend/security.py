@@ -7,7 +7,7 @@ config = dotenv_values(".env")
 
 SECRET_KEY = config["SECRET_KEY"]
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 100
 
 pwd_context = PasswordHash.recommended()
 

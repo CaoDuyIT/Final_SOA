@@ -70,6 +70,8 @@
                 <!-- Room cards will be dynamically inserted here by JavaScript -->
             </div>
         </section>
+        
+        
     </main>
 
     <footer>
@@ -77,55 +79,69 @@
     </footer>
 
     <!-- Room Detail/Booking Modal -->
-    <div id="booking-modal" class="modal-container">
-        <div class="modal-overlay">
-            <div class="modal-content" style="max-width: 600px;">
-                <div class="modal-header">
-                    <h2 id="booking-modal-title">Room Details</h2>
-                    <button class="close-btn">&times;</button>
-                </div>
-                <div id="booking-modal-body" class="modal-body">
-                    <!-- Dynamic content will be injected here -->
-                </div>
-                <div class="modal-footer">
-                    <button id="payment-btn" class="btn btn-primary">Proceed to Payment</button>
-                </div>
-            </div>
+    <div id="modal-overlay" class="modal-overlay"></div>
+    <div id="booking-modal" class="modal-content">
+        <span id="modal-close">&times;</span>
+        <div class="modal-body">
+            <h2 id="modal-room-name"></h2>
+            <p id="modal-room-desc"></p>
+            <p id="modal-room-price"></p>
+            <p id="modal-room-beds"></p>
+            <p id="modal-room-available"></p>
+            <label>Quantity: <input type="number" id="room-qty" min="1" value="1"></label>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" id="add-booking-btn">Add to Booking</button>
         </div>
     </div>
 
     <!-- Payment Modal -->
-    <div id="payment-modal" class="modal-container">
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Online Payment</h2>
-                    <button class="close-btn">&times;</button>
+    <div id="payment-overlay" class="modal-overlay"></div>
+    <div id="payment-modal" class="modal-content">
+        <div class="modal-header">
+            <h2>Online Payment</h2>
+            <button class="close-btn">&times;</button>
+        </div>
+        <form id="payment-form">
+            <div class="modal-body">
+                <p>Total Amount: <span id="total-amount">$0</span></p>
+                <div class="form-group">
+                    <label for="payment-method">Payment Method</label>
+                    <select id="payment-method">
+                        <option>E-wallet</option>
+                        <option>Bank Transfer</option>
+                        <option>Credit Card</option>
+                    </select>
                 </div>
-                <form id="payment-form">
-                    <div class="modal-body">
-                        <p>Total Amount: <span id="total-amount">$200</span> (for 2 nights)</p>
-                        <div class="form-group">
-                            <label for="payment-method">Payment Method</label>
-                            <select id="payment-method">
-                                <option>E-wallet</option>
-                                <option>Bank Transfer</option>
-                                <option>Credit Card</option>
-                            </select>
-                        </div>
-                         <div class="form-group">
-                            <label for="otp">Enter OTP</label>
-                            <input type="text" id="otp" placeholder="Check your email for OTP" required>
-                        </div>
-                        <p><a href="#">Resend OTP</a></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary">Confirm Payment</button>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label for="otp">Enter OTP</label>
+                    <input type="text" id="otp" placeholder="Check your email for OTP" required>
+                </div>
+                <p><a href="#">Resend OTP</a></p>
             </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Confirm Payment</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logout-overlay" class="modal-overlay"></div>
+    <div id="logout-modal" class="modal-content">
+        <div class="modal-header">
+            <h2>Confirm Logout</h2>
+            <span id="logout-close">&times;</span>
+        </div>
+        <div class="modal-body">
+            <p>Are you sure you want to log out?</p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" id="logout-cancel">Cancel</button>
+            <button class="btn btn-primary" id="logout-confirm">Confirm</button>
         </div>
     </div>
+
+
 </body>
 <script src="js/guest.js"></script>
 </html>

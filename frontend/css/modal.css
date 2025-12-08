@@ -1,4 +1,4 @@
-/* Modal Styles */
+/* Overlay cho cả 2 modal */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -6,22 +6,30 @@
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    display: none; /* Hidden by default */
-    justify-content: center;
-    align-items: center;
+    display: none; /* ẩn mặc định */
     z-index: 1000;
 }
 
+/* Modal content chung */
 .modal-content {
     background: white;
     padding: 30px;
     border-radius: 10px;
     width: 90%;
     max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto; /* scroll nếu modal quá cao */
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
+    
+    position: fixed; /* để nằm giữa màn hình */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none; /* ẩn mặc định */
+    z-index: 1001; /* nổi trên overlay */
 }
 
+/* Header modal */
 .modal-header {
     display: flex;
     justify-content: space-between;
@@ -44,6 +52,7 @@
     background: none;
 }
 
+/* Body modal */
 .modal-body .form-group {
     margin-bottom: 15px;
 }
@@ -60,9 +69,10 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    box-sizing: border-box; /* Important for padding */
+    box-sizing: border-box;
 }
 
+/* Footer modal */
 .modal-footer {
     border-top: 1px solid #eee;
     padding-top: 15px;
@@ -79,6 +89,7 @@
     margin-left: 10px;
 }
 
+/* Buttons màu sắc */
 .btn-primary {
     background-color: #3498db;
     color: white;
@@ -94,3 +105,82 @@
     color: #333;
 }
 
+/* Khóa scroll khi modal mở */
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal-content {
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+}
+
+.modal-body {
+    flex: 1; /* chiếm hết không gian còn lại */
+    overflow-y: auto;
+}
+
+.modal-footer {
+    flex-shrink: 0; /* luôn hiện dưới */
+}
+/* Đảm bảo các overlay luôn ẩn ban đầu */
+#modal-overlay,
+#payment-overlay {
+    display: none;
+    /* Các thuộc tính khác như position: fixed, width: 100%, ... */
+}
+
+/* Đảm bảo các modal luôn ẩn ban đầu */
+#booking-modal,
+#payment-modal {
+    display: none;
+    /* Các thuộc tính khác như position: fixed, background: white, ... */
+}
+
+#logout-overlay, 
+#logout-modal {
+    display: none   ; 
+}
+
+/* Rating stars */
+.rating-group .stars {
+    display: flex;
+    gap: 5px;
+    cursor: pointer;
+    font-size: 28px;
+    color: #ccc;
+}
+
+.rating-group .star.selected,
+.rating-group .star.hovered {
+    color: #f1c40f;
+}
+
+.rating-group label {
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+#review-text {
+    width: 100%;
+    max-width: 100%;
+    height: 80px;          /* gọn lại, không quá cao */
+    resize: vertical;      /* cho phép kéo chiều dọc nếu muốn */
+    box-sizing: border-box;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+#issue-text {
+    width: 100%;
+    max-width: 100%;
+    height: 70px;
+    resize: vertical;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+}

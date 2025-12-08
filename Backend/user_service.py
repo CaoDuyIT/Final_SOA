@@ -16,7 +16,8 @@ def get_user(username: str):
                     email=result["Email"],
                     phonenumber=result["PhoneNumber"],
                     role_id=result["RoleID"],
-                    hashed_password=result["HashPassword"]
+                    hashed_password=result["HashPassword"],
+                    customer_id=result["CustomerID"]
                 )
     finally:
         conn.close()

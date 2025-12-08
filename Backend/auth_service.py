@@ -12,7 +12,7 @@ config = dotenv_values(".env")
 
 SECRET_KEY = config["SECRET_KEY"]
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1
+ACCESS_TOKEN_EXPIRE_MINUTES = 100
 
 pwd_context = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -54,3 +54,7 @@ def authenticate_user(username: str, password: str):
     if not pwd_context.verify(password, user.hashed_password):
         return None
     return user
+
+
+async def get_current_customer_id(current_user: Annotated[User, Depends(get_current_active_user)]) -> int:
+    return current_user.customer_id
