@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receptionist Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/receptionist.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2>Reception</h2>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#" id="nav-checkin-checkout" class="active">Check-in / Check-out</a></li>
+                    <li><a href="#" id="nav-bookings">All Bookings</a></li>
+                    <li><a href="#" id="nav-report">Report Issue</a></li>
+                    <li><a href="index.html">Logout</a></li>
+                </ul>
+            </nav>
+        </aside>
+        <main class="main-content">
+            <!-- Check-in / Check-out Section -->
+            <div id="checkin-checkout-content" class="content-block">
+                <header class="main-header">
+                    <h1>Guest Search</h1>
+                </header>
+                <div class="content">
+                    <form id="search-booking-form" class="search-bar">
+                        <input type="text" id="search-input" placeholder="Search by Booking ID, Name, or Phone...">
+                        <button type="submit" class="action-btn">Search</button>
+                    </form>
+                    <div id="search-results" class="search-results-container">
+                        <!-- Search results will be displayed here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- All Bookings Section -->
+            <div id="bookings-content" class="content-block" style="display: none;">
+                <header class="main-header">
+                    <h1>All Bookings</h1>
+                </header>
+                <div class="content">
+                    <table id="all-bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Guest Name</th>
+                                <th>Room</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- All booking rows will be dynamically inserted here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Report Issue Section -->
+            <div id="report-content" class="content-block" style="display: none;">
+                <header class="main-header">
+                    <h1>Report an Issue</h1>
+                </header>
+                <div class="content">
+                    <form id="report-issue-form" class="report-form">
+                        <div class="form-group">
+                            <label for="issue-room-number">Room Number</label>
+                            <input type="text" id="issue-room-number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="issue-description">Describe the Issue</label>
+                            <textarea id="issue-description" rows="4" required></textarea>
+                        </div>
+                        <button type="submit" class="action-btn">Submit Report</button>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="js/receptionist.js"></script>
+</body>
+</html>
+</html>
