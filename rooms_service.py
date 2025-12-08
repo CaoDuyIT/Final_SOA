@@ -49,3 +49,14 @@ async def get_rooms_available_by_type(room_type_id: int, db):
         cursor.execute(query, (room_type_id, status_available))
 
         return cursor.fetchall()
+     
+async def get_all_room_types(db):
+     with db.cursor() as cursor:
+
+        query = """
+            SELECT * FROM RoomType
+        """
+
+        cursor.execute(query)
+
+        return cursor.fetchall()

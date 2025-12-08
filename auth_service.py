@@ -46,3 +46,11 @@ async def get_current_active_user(token: Annotated[str, Depends(oauth2_scheme)])
         raise HTTPException(status_code=400, detail="Inactive user")
     
     return user
+
+def authenticate_user(username: str, password: str):
+    user = get_user(username) 
+    if not user:
+        return None
+    if not pwd_context.verify(password, user.hashed_password):
+        return None
+    return user

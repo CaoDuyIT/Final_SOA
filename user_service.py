@@ -14,7 +14,7 @@ def get_user(username: str):
                     username=result["UserName"],
                     fullname=result["FullName"],
                     email=result["Email"],
-                    phonenumer=result["PhoneNumber"],
+                    phonenumber=result["PhoneNumber"],
                     role_id=result["RoleID"],
                     hashed_password=result["HashPassword"]
                 )

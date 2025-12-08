@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from db_connection import get_db
 from typing import List
-from models import RoomRequest
-
-from rooms_service import get_rooms_available, get_rooms_available_by_type, get_rooms_by_type
+from models import RoomRequest, User, RoomType
+from auth_service import get_current_active_user
+from rooms_service import get_rooms_available, get_rooms_available_by_type, get_rooms_by_type, get_all_room_types
 
 room_router = APIRouter(prefix="/rooms", tags=["Rooms"])
 
@@ -43,9 +43,23 @@ async def get_rooms_available(room_type_id: int, checkin: str, checkout: str, db
         rooms = get_rooms_available(room_type_id, checkin, checkout, db)
 
         if not rooms:
-            raise HTTPException(404, "No rooms left")
+            raise HTTPException(status_code=404, detail="No rooms left")
 
         return rooms
         
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    
+# Get all rooms types
+@room_router.get("/get_all_type/")
+async def get_all_rooms_type(current_user: User = Depends(get_current_active_user), db=Depends(get_db)):
+    try:
+        rooms = await get_all_room_types(db)
+
+        if not rooms:
+            raise HTTPException(status_code=404, detail="There are no room type for now")
+        
+        return rooms
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

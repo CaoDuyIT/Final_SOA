@@ -4,7 +4,7 @@ class User(BaseModel):
     username: str
     fullname: str
     email: str
-    phonenumer: str
+    phonenumber: str
     role_id: int = 1
     disabled: bool | None = None
 
@@ -25,13 +25,27 @@ class RoomRequest(BaseModel):
     RoomTypeID: int
     StatusID: int
 
+class RoomType(BaseModel):
+    ID: int
+    Name: str
+    Description: str
+    Price: int # Hoặc Decimal nếu bạn dùng
+    MaxPeople: int
+    BedCount: int
+
 # ============ Booking Model ==============
 class Rooms(BaseModel):
     RoomTypeID: int
     Quantity: int = 1
+
 
 class RoomsBooking(BaseModel):
     CustomerID: int
     RoomRequests: list[Rooms]
     CheckIn: str
     CheckOut: str
+
+# ========= Login Models =========
+class LoginRequest(BaseModel):
+    username: str
+    password: str
