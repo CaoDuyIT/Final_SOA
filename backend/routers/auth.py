@@ -5,10 +5,10 @@ from jose import JWTError, jwt
 
 from models import Token, TokenData
 from security import verify_password, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES, SECRET_KEY, ALGORITHM
-from user_service import get_user
+from services.user_service import get_user
 
 from models import User
-from auth_service import get_current_active_user
+from services.auth_service import get_current_active_user
 
 auth_router = APIRouter(prefix="/auth", tags=["Authentication"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")

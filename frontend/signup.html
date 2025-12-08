@@ -11,24 +11,39 @@
     <div class="login-container">
         <div class="login-box">
             <h2>Sign Up</h2>
-            <form>
+            <form id="signup-form">
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" placeholder="Full Name" required>
+                    <input id="signup-username" type="text" placeholder="Username" required>
                 </div>
+
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input id="signup-fullname" type="text" placeholder="Full Name" required>
+                </div>
+
                 <div class="input-group">
                     <i class="fas fa-envelope"></i>
-                    <input type="email" placeholder="Email ID" required>
+                    <input id="signup-email" type="email" placeholder="Email" required>
                 </div>
+
+                <div class="input-group">
+                    <i class="fas fa-phone"></i>
+                    <input id="signup-phone" type="text" placeholder="Phone" required>
+                </div>
+
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Password" required>
+                    <input id="signup-password" type="password" placeholder="Password" required>
                 </div>
+
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" placeholder="Confirm Password" required>
+                    <input id="signup-password-checker" type="password" placeholder="Confirm Password" required>
                 </div>
+
                 <button type="submit" class="login-btn">SIGN UP</button>
+
                 <div class="signup-link">
                     <p>Already have an account? <a href="login.html">Login</a></p>
                 </div>
@@ -36,4 +51,5 @@
         </div>
     </div>
 </body>
+<script src="js/login_signup.js"></script>
 </html>

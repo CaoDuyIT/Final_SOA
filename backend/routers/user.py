@@ -23,7 +23,7 @@ async def add_customer(customer: UserInDB, db=Depends(get_db)):
             
             sql = "INSERT INTO Customer (UserName, FullName, Email, PhoneNumber, HashPassword, RoleID) VALUES (%s,%s,%s,%s,%s,%s)"
             cursor.execute(sql, (customer.username, customer.fullname, customer.email,
-                                 customer.phonenumer, pwd_context.hash(customer.hashed_password),
+                                 customer.phonenumber, pwd_context.hash(customer.hashed_password),
                                  customer.role_id))
             conn.commit()
             return {"message": "Customer added"}

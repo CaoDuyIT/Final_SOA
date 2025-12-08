@@ -7,6 +7,7 @@ from email.mime.multipart import MIMEMultipart
 import os
 import dotenv
 
+dotenv.load_dotenv()
 SENDER_EMAIL = os.getenv("SENDER_EMAIL")
 EMAIL_APP_PASSWORD = os.getenv("EMAIL_APP_PASSWORD")
 
