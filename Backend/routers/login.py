@@ -7,10 +7,10 @@ from datetime import datetime, timedelta, timezone
 from jose import jwt, JWTError
 from dotenv import dotenv_values
 from passlib.context import CryptContext
-from user_service import get_user
+from services.user_service import get_user
 from pwdlib import PasswordHash
 from models import LoginRequest
-from auth_service import authenticate_user
+from services.auth_service import authenticate_user
 
 login_router = APIRouter(prefix="/login", tags=["Login"])
 

@@ -30,25 +30,33 @@ def create_review(review: ReviewCreate, conn=Depends(get_db)):
                 )
 
             customer_id = transaction["CustomerID"]
-            room_id = transaction["RoomID"]
+            room_id = review.room_id  # lấy từ request body
 
-            # 2) Kiểm tra khách này đã đánh giá phòng này chưa
+            # 2) Kiểm tra giao dịch có phòng này không
             cursor.execute(
-                """
-                SELECT * FROM Review
-                WHERE CustomerID = %s AND RoomID = %s
-                """,
+                "SELECT * FROM TransactionRoom WHERE TransactionID = %s AND RoomID = %s",
+                (review.transaction_id, room_id)
+            )
+            tr_room = cursor.fetchone()
+            if not tr_room:
+                raise HTTPException(
+                    status_code=400,
+                    detail="Giao dịch không có phòng này"
+                )
+
+            # 3) Kiểm tra khách này đã đánh giá phòng này chưa
+            cursor.execute(
+                "SELECT * FROM Review WHERE CustomerID = %s AND RoomID = %s",
                 (customer_id, room_id)
             )
             exist = cursor.fetchone()
-
             if exist:
                 raise HTTPException(
                     status_code=400,
                     detail="Bạn đã đánh giá phòng này rồi."
                 )
 
-            # 3) Tạo review
+            # 4) Tạo review
             cursor.execute(
                 """
                 INSERT INTO Review (CustomerID, RoomID, Rating, ReviewText, CreateAt)
@@ -70,7 +78,7 @@ def create_review(review: ReviewCreate, conn=Depends(get_db)):
         raise
     except Exception as e:
         print("SERVER ERROR:", e)
-        raise HTTPException(status_code=500, detail="Lỗi server")
+        raise HTTPException(status_code=500, detail=f"Lỗi server: {str(e)}")
 
 
 # ===============================

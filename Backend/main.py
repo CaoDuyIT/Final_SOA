@@ -6,6 +6,7 @@ from routers.profile import profile_router
 from routers.rooms import room_router
 from routers.booking import booking_router
 from routers.login import login_router
+from routers.otp import otp_router
 from routers.review import review_router
 from routers.incident import incident_router
 
@@ -24,6 +25,7 @@ app.include_router(booking_router)
 app.include_router(login_router)
 app.include_router(review_router)
 app.include_router(incident_router)
+app.include_router(otp_router)
 
 # Allow frontend dev server (Live Server) to call this API
 app.add_middleware(

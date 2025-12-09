@@ -2,8 +2,8 @@ from fastapi import APIRouter, Depends, HTTPException
 from db_connection import get_db
 from typing import List
 from models import RoomRequest, User, RoomType
-from auth_service import get_current_active_user
-from rooms_service import get_rooms_available, get_rooms_available_by_type, get_rooms_by_type, get_all_room_types
+from services.auth_service import get_current_active_user
+from services.rooms_service import get_rooms_available, get_rooms_available_by_type, get_rooms_by_type, get_all_room_types
 
 room_router = APIRouter(prefix="/rooms", tags=["Rooms"])
 

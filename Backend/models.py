@@ -39,12 +39,26 @@ class Rooms(BaseModel):
     RoomTypeID: int
     Quantity: int = 1
 
-
 class RoomsBooking(BaseModel):
     CustomerID: int
-    RoomRequests: list[Rooms]
     CheckIn: str
     CheckOut: str
+
+class RoomBookingAdd(BaseModel):
+    TransactionID: int
+    RoomRequests: list[Rooms]
+
+class LoginRequest(BaseModel):
+    username: str
+    password: str
+
+# ================= OTP Model =================
+class sendOTPReq(BaseModel):
+    customer_id: int
+    transaction_id: int
+
+class VerifyOTPReq(sendOTPReq):
+    otp: str
 
 # ========= Login Models =========
 class LoginRequest(BaseModel):
@@ -62,6 +76,7 @@ class BookingHistory(BaseModel):
 # ========= Reviews Models =========
 class ReviewCreate(BaseModel):
     transaction_id: int
+    room_id: int 
     rating: int
     comment: str
 

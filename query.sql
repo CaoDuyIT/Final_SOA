@@ -57,14 +57,13 @@ CREATE TABLE Room (
 CREATE TABLE `Transaction` (
     TransactionID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
-    RoomID INT NOT NULL,
     CheckIn DATETIME NOT NULL,
     CheckOut DATETIME NOT NULL,
+    TotalPrice INT DEFAULT 0,
     PaidAt DATETIME,
     `Status` VARCHAR(30),
     CreateAt DATETIME DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
-    FOREIGN KEY (RoomID) REFERENCES Room(RoomID)
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
 );
 
 CREATE TABLE TransactionRoom (
@@ -75,9 +74,6 @@ CREATE TABLE TransactionRoom (
     FOREIGN KEY (RoomID) REFERENCES Room(RoomID)
 );
 
--- ==========================================
--- TABLE: Review
--- ==========================================
 CREATE TABLE Review (
     ReviewID INT AUTO_INCREMENT PRIMARY KEY,
     CustomerID INT NOT NULL,
@@ -108,12 +104,12 @@ INSERT INTO Role (Name, Description) VALUES
 ('Admin', 'System administrator'),
 ('Cleaner', 'Room cleaning staff');
 
-INSERT INTO Customer (FullName, UserName, Email, PhoneNumber, HashPassword, RoleID, Balance) VALUES
-('Alice Nguyen', 'AliceNguyen', 'alice@example.com', '0901234567', 'hash1', 1, 5000000),
-('Bob Tran', 'BobTran', 'bob@example.com', '0902234567', 'hash2', 1, 2000000),
-('Chris Pham', 'ChrisPham', 'chris@example.com', '0903234567', 'hash3', 2, 1000000),
-('David Hoang', 'DavidHoang', 'david@example.com', '0904234567', 'hash4', 3, 3000000),
-('Emily Le', 'EmilyLe', 'emily@example.com', '0905234567', 'hash5', 5, 1500000);
+INSERT INTO Customer (FullName, UserName, Email, PhoneNumber, HashPassword, RoleID) VALUES
+('Alice Nguyen', 'AliceNguyen', 'alice@example.com', '0901234567', 'hash1', 1),
+('Bob Tran', 'BobTran', 'bob@example.com', '0902234567', 'hash2', 1),
+('Chris Pham', 'ChrisPham', 'chris@example.com', '0903234567', 'hash3', 2),
+('David Hoang', 'DavidHoang', 'david@example.com', '0904234567', 'hash4', 3),
+('Emily Le', 'EmilyLe', 'emily@example.com', '0905234567', 'hash5', 5);
 
 INSERT INTO Staff (StaffID, HireDate, Salary, IsActive) VALUES
 (3, '2023-01-01', 8000000, TRUE),
@@ -146,12 +142,20 @@ INSERT INTO Room (RoomNumber, RoomTypeID, StatusID) VALUES
 ('B202', 3, 1),
 ('C301', 5, 1);
 
-INSERT INTO `Transaction` (CustomerID, RoomID, CheckIn, CheckOut, PaidAt, Status) VALUES
-(1, 1, '2024-12-01 12:00:00', '2024-12-02 12:00:00', '2024-12-01 10:00:00', 'Paid'),
-(2, 2, '2024-12-02 14:00:00', '2024-12-03 11:00:00', '2024-12-02 12:30:00', 'Pending'),
-(3, 3, '2024-12-03 15:00:00', '2024-12-04 12:00:00', '2024-12-03 15:00:00', 'Paid'),
-(4, 4, '2024-12-04 16:00:00', '2024-12-05 10:00:00', NULL, 'Unpaid'),
-(5, 5, '2024-12-05 08:00:00', '2024-12-06 12:00:00', '2024-12-05 09:00:00', 'Paid');
+INSERT INTO `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
+(1, '2024-12-01 12:00:00', '2024-12-02 12:00:00', '2024-12-01 10:00:00', 'Paid'),
+(2, '2024-12-02 14:00:00', '2024-12-03 11:00:00', '2024-12-02 12:30:00', 'Pending'),
+(3, '2024-12-03 15:00:00', '2024-12-04 12:00:00', '2024-12-03 15:00:00', 'Paid'),
+(4, '2024-12-04 16:00:00', '2024-12-05 10:00:00', NULL, 'Unpaid'),
+(5, '2024-12-05 08:00:00', '2024-12-06 12:00:00', '2024-12-05 09:00:00', 'Paid');
+
+INSERT INTO TransactionRoom (TransactionID, RoomID)
+VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 4),
+(5, 5);
 
 INSERT INTO Review (CustomerID, RoomID, Rating, ReviewText) VALUES
 (1, 1, 4, 'Nice room, comfortable bed'),
@@ -161,8 +165,98 @@ INSERT INTO Review (CustomerID, RoomID, Rating, ReviewText) VALUES
 (5, 5, 5, 'Amazing luxury experience');
 
 INSERT INTO Incident (CustomerID, RoomID, StatusID, Description) VALUES
-(1, 1, 6, 'Broken lamp'),
-(2, 2, 7, 'Air conditioner broken'),
-(3, 3, 8, 'Shower fixed'),
-(4, 4, 4, 'Room needs cleaning'),
-(5, 5, 5, 'TV requires maintenance');
+(1, 1, 6, 'Broken lamp'),               -- Reported
+(2, 2, 6, 'Air conditioner broken'),    -- Reported
+(3, 3, 7, 'Shower broken'),             -- In Progress
+(4, 4, 8, 'Room issue resolved'),       -- Resolved
+(5, 5, 6, 'TV requires maintenance');   -- Reported
+
+-- select * from Customer
+-- select * from RoomType
+-- select * from Room where RoomTypeID = 1
+-- select * from TransactionRoom
+-- select * from Transaction
+
+-- truncate TransactionRoom
+-- truncate Transaction
+
+-- insert into `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
+-- (1, '2025-12-01 12:00:00', '2025-12-02 12:00:00', NULL, 'Paid')
+
+
+DELIMITER //
+
+CREATE TRIGGER trg_update_total_price_after_insert
+AFTER INSERT ON TransactionRoom
+FOR EACH ROW
+BEGIN
+    DECLARE room_price DECIMAL(10,2);
+
+    -- Lấy giá phòng theo RoomID
+    SELECT Price INTO room_price
+    FROM Room r
+    JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID
+    WHERE r.RoomID = NEW.RoomID;
+
+    -- Tính số đêm
+    UPDATE `Transaction`
+    SET TotalPrice = TotalPrice + (
+        room_price * DATEDIFF(CheckOut, CheckIn)
+    )
+    WHERE TransactionID = NEW.TransactionID;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_update_total_price_after_delete
+AFTER DELETE ON TransactionRoom
+FOR EACH ROW
+BEGIN
+    DECLARE room_price DECIMAL(10,2);
+
+    SELECT Price INTO room_price
+    FROM Room r
+    JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID
+    WHERE r.RoomID = OLD.RoomID;
+
+    UPDATE `Transaction`
+    SET TotalPrice = TotalPrice - (
+        room_price * DATEDIFF(CheckOut, CheckIn)
+    )
+    WHERE TransactionID = OLD.TransactionID;
+END//
+
+DELIMITER ;
+
+DELIMITER //
+
+CREATE TRIGGER trg_update_total_price_after_update
+AFTER UPDATE ON TransactionRoom
+FOR EACH ROW
+BEGIN
+    DECLARE old_price DECIMAL(10,2);
+    DECLARE new_price DECIMAL(10,2);
+
+    -- Giá cũ
+    SELECT Price INTO old_price
+    FROM Room r
+    JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID
+    WHERE r.RoomID = OLD.RoomID;
+
+    -- Giá mới
+    SELECT Price INTO new_price
+    FROM Room r
+    JOIN RoomType rt ON r.RoomTypeID = rt.RoomTypeID
+    WHERE r.RoomID = NEW.RoomID;
+
+    UPDATE `Transaction`
+    SET TotalPrice = TotalPrice + (
+        (new_price - old_price) * DATEDIFF(CheckOut, CheckIn)
+    )
+    WHERE TransactionID = NEW.TransactionID;
+END//
+
+DELIMITER ;
+

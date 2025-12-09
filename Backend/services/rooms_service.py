@@ -8,16 +8,15 @@ async def get_rooms_available(room_type_id: int, checkin: str, checkout: str, db
             From Room room
             Where room.RoomTypeID = %s
             And room.StatusID = %s
-            And room.RoomID not in (
-                Select t.RoomID
+            And room.RoomID NOT IN (
+                Select tr.RoomID
                 From `Transaction` t
-                Where t.Status in ('Pending', 'Paid', 'CheckedIn')
-                And (
-                    %s < t.CheckOut
-                    And %s > t.CheckIN
+                Join TransactionRoom tr ON t.TransactionID = tr.TransactionID
+                Where (
+                    (t.CheckIn < %s AND t.CheckOut > %s)
                 )
             )
-        """
+            """
 
         cursor.execute(query, (room_type_id, status_available, checkin, checkout))
 
@@ -60,3 +59,4 @@ async def get_all_room_types(db):
         cursor.execute(query)
 
         return cursor.fetchall()
+

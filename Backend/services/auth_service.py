@@ -6,13 +6,13 @@ from typing import Annotated
 from models import User, TokenData
 from db_connection import get_connection, get_db
 from dotenv import dotenv_values
-from user_service import get_user
+from services.user_service import get_user
 
 config = dotenv_values(".env")
 
 SECRET_KEY = config["SECRET_KEY"]
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 100
+ACCESS_TOKEN_EXPIRE_MINUTES = int(config["ACCESS_TOKEN_EXPIRE_MINUTES"])
 
 pwd_context = PasswordHash.recommended()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -48,13 +48,47 @@ async def get_current_active_user(token: Annotated[str, Depends(oauth2_scheme)])
     return user
 
 def authenticate_user(username: str, password: str):
-    user = get_user(username) 
+    """
+    Authenticates a user by username and password.
+    Returns the user object if authentication is successful, otherwise returns False.
+    """
+    user = get_user(username)
     if not user:
-        return None
+        return False
     if not pwd_context.verify(password, user.hashed_password):
-        return None
+        return False
     return user
 
+async def get_current_customer_id(
+    token: str = Depends(oauth2_scheme),
+    conn = Depends(get_db)
+):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
 
-async def get_current_customer_id(current_user: Annotated[User, Depends(get_current_active_user)]) -> int:
-    return current_user.customer_id
+        if username is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+
+        with conn.cursor() as cursor:
+            cursor.execute(
+                "SELECT CustomerID FROM Customer WHERE UserName=%s", 
+                (username,)
+            )
+            row = cursor.fetchone()
+
+        if not row:
+            raise HTTPException(status_code=404, detail="Customer not found")
+
+        return row["CustomerID"]
+
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token decode failed",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
