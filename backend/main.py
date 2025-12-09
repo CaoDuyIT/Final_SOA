@@ -8,6 +8,8 @@ from routers.booking import booking_router
 from routers.login import login_router
 # from routers.payment import payment_router
 from routers.otp import otp_router
+from routers.housekeeping import housekeeping_router
+from routers.receptionist import receptionist_router
 
 
 from fastapi.middleware.cors import CORSMiddleware
@@ -24,6 +26,8 @@ app.include_router(booking_router)
 # app.include_router(payment_router)
 app.include_router(otp_router)
 app.include_router(login_router)
+app.include_router(housekeeping_router)
+app.include_router(receptionist_router)
 
 app.add_middleware(
     CORSMiddleware,

@@ -15,8 +15,8 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li><a href="#" id="nav-checkin-checkout" class="active">Check-in / Check-out</a></li>
-                    <li><a href="#" id="nav-bookings">All Bookings</a></li>
-                    <li><a href="#" id="nav-report">Report Issue</a></li>
+                    <!-- <li><a href="#" id="nav-bookings">All Bookings</a></li> -->
+                    <!-- <li><a href="#" id="nav-report">Report Issue</a></li> -->
                     <li><a href="index.html">Logout</a></li>
                 </ul>
             </nav>
@@ -30,6 +30,7 @@
                 <div class="content">
                     <form id="search-booking-form" class="search-bar">
                         <input type="text" id="search-input" placeholder="Search by Booking ID, Name, or Phone...">
+                        <button type="button" id="reset-search-btn" class="action-btn" style="background-color: #28a745; margin-right: 10px;">Reset</button>
                         <button type="submit" class="action-btn">Search</button>
                     </form>
                     <div id="search-results" class="search-results-container">
@@ -38,50 +39,13 @@
                 </div>
             </div>
 
-            <!-- All Bookings Section -->
-            <div id="bookings-content" class="content-block" style="display: none;">
-                <header class="main-header">
-                    <h1>All Bookings</h1>
-                </header>
-                <div class="content">
-                    <table id="all-bookings-table">
-                        <thead>
-                            <tr>
-                                <th>Booking ID</th>
-                                <th>Guest Name</th>
-                                <th>Room</th>
-                                <th>Status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- All booking rows will be dynamically inserted here -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+            <!-- All Bookings Section (Hidden) -->
+            <!-- <div id="bookings-content" class="content-block" style="display: none;"> ... </div> -->
 
-            <!-- Report Issue Section -->
-            <div id="report-content" class="content-block" style="display: none;">
-                <header class="main-header">
-                    <h1>Report an Issue</h1>
-                </header>
-                <div class="content">
-                    <form id="report-issue-form" class="report-form">
-                        <div class="form-group">
-                            <label for="issue-room-number">Room Number</label>
-                            <input type="text" id="issue-room-number" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="issue-description">Describe the Issue</label>
-                            <textarea id="issue-description" rows="4" required></textarea>
-                        </div>
-                        <button type="submit" class="action-btn">Submit Report</button>
-                    </form>
-                </div>
-            </div>
+            <!-- Report Issue Section (Hidden) -->
+            <!-- <div id="report-content" class="content-block" style="display: none;"> ... </div> -->
         </main>
     </div>
     <script src="js/receptionist.js"></script>
 </body>
-</html>
 </html>

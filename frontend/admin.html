@@ -22,57 +22,24 @@
         </aside>
         <main class="main-content">
             <header class="main-header">
-                <h1>User Management</h1>
+                <h1>Admin Dashboard</h1>
                 <button id="add-user-btn" class="action-btn">Add New User</button>
             </header>
             <div class="content">
                 <table>
                     <thead>
                         <tr>
-                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Username</th>
+                            <th>Full Name</th>
                             <th>Email</th>
+                            <th>Phone</th>
                             <th>Role</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody id="user-table-body">
                         <!-- User rows will be dynamically inserted here -->
-                        <tr>
-                            <td>John Doe</td>
-                            <td>john.doe@example.com</td>
-                            <td>Manager</td>
-                            <td class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Jane Smith</td>
-                            <td>jane.smith@example.com</td>
-                            <td>Receptionist</td>
-                            <td class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                         <tr>
-                            <td>Peter Jones</td>
-                            <td>peter.jones@example.com</td>
-                            <td>Housekeeping</td>
-                            <td class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Alice Williams</td>
-                            <td>alice.w@guest.com</td>
-                            <td>Guest</td>
-                            <td class="actions">
-                                <button class="edit-btn">Edit</button>
-                                <button class="delete-btn">Delete</button>
-                            </td>
-                        </tr>
                     </tbody>
                 </table>
             </div>
@@ -89,21 +56,31 @@
                 </div>
                 <div class="modal-body">
                     <form id="user-form">
+                        <input type="hidden" id="user-id">
                         <div class="form-group">
-                            <label for="name">Name</label>
-                            <input type="text" id="name" required>
+                            <label for="username">Username</label>
+                            <input type="text" id="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="fullname">Full Name</label>
+                            <input type="text" id="fullname" required>
                         </div>
                         <div class="form-group">
                             <label for="email">Email</label>
                             <input type="email" id="email" required>
                         </div>
                         <div class="form-group">
+                            <label for="phonenumber">Phone Number</label>
+                            <input type="text" id="phonenumber" required>
+                        </div>
+                        <div class="form-group" id="password-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password">
+                        </div>
+                        <div class="form-group">
                             <label for="role">Role</label>
                             <select id="role" required>
-                                <option value="Guest">Guest</option>
-                                <option value="Receptionist">Receptionist</option>
-                                <option value="Housekeeping">Housekeeping</option>
-                                <option value="Manager">Manager</option>
+                                <!-- Roles will be populated dynamically -->
                             </select>
                         </div>
                         <div class="modal-footer">

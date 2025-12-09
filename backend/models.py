@@ -50,9 +50,20 @@ class LoginRequest(BaseModel):
     username: str
     password: str
 
+class RoomStatusUpdate(BaseModel):
+    status: str
+
 class sendOTPReq(BaseModel):
     customer_id: int
     transaction_id: int
 
 class VerifyOTPReq(sendOTPReq):
     otp: str
+
+class RoomCreate(BaseModel):
+    room_number: str
+    room_type_id: int
+
+class RoomUpdateInfo(BaseModel):
+    room_number: str | None = None
+    room_type_id: int | None = None

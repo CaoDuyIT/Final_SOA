@@ -6,8 +6,8 @@
 - [x] Lấy chi tiết thông tin 1 loại phòng (số lượng có type "avalible") ❤️ [Cao Duy]
 - [x] Tạo transaction (1.1) 💛 [Gia Duy]
 - [x] Request OTP [service]
-- [ ] Verify OTP (cần 1.1 để tạo key trong Redis) 💛 [Thuan]
-- [ ] Send mail (để gửi hóa đơn thanh toán thành công cho customer) [service] ❤️
+- [x] Verify OTP (cần 1.1 để tạo key trong Redis) 💛 [Thuan]
+- [x] Send mail (để gửi hóa đơn thanh toán thành công cho customer) [service] ❤️
 - [x] Lấy danh sách các phòng đã đặt (lịch sử đặt) ❤️ [CaoDuy]
 - [x] Đánh giá phòng [Customer]
 - [ ] Check in phòng / Check out [Receptionist] ❤️
@@ -21,10 +21,10 @@
 - [x] CRUD Phòng & loại phòng (cần đảm bảo không thể xóa loại phòng đó nếu đang có phòng thuộc loại phòng đó. Trong Thêm/Sửa phòng cụ thể thì nên cho phép chọn loại phòng thay vì ID) 💛
 
 Thuan
-- [] Create transaction
-- [] Redis OTP
-- [] verify
-- [] hoa don
+- [x] Create transaction
+- [x] Redis OTP
+- [x] verify
+- [x] hoa don
 
 
 ## Setup

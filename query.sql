@@ -97,6 +97,92 @@ CREATE TABLE Incident (
     FOREIGN KEY (StatusID) REFERENCES `Status`(StatusID)
 );
 
+-- INSERT INTO Role (Name, Description) VALUES
+-- ('Customer', 'Normal hotel customer'),
+-- ('Staff', 'Hotel staff member'),
+-- ('Manager', 'Hotel manager'),
+-- ('Admin', 'System administrator'),
+-- ('Cleaner', 'Room cleaning staff');
+
+-- INSERT INTO Customer (FullName, UserName, Email, PhoneNumber, HashPassword, RoleID) VALUES
+-- ('Alice Nguyen', 'AliceNguyen', 'alice@example.com', '0901234567', 'hash1', 1),
+-- ('Bob Tran', 'BobTran', 'bob@example.com', '0902234567', 'hash2', 1),
+-- ('Chris Pham', 'ChrisPham', 'chris@example.com', '0903234567', 'hash3', 2),
+-- ('David Hoang', 'DavidHoang', 'david@example.com', '0904234567', 'hash4', 3),
+-- ('Emily Le', 'EmilyLe', 'emily@example.com', '0905234567', 'hash5', 5);
+
+-- INSERT INTO Staff (StaffID, HireDate, Salary, IsActive) VALUES
+-- (3, '2023-01-01', 8000000, TRUE),
+-- (4, '2022-06-15', 15000000, TRUE),
+-- (5, '2023-04-10', 6000000, TRUE),
+-- (2, '2024-01-05', 5000000, FALSE),
+-- (1, '2021-11-20', 7000000, TRUE);
+
+-- INSERT INTO RoomType (Name, Description, Price, MaxPeople, BedCount) VALUES
+-- ('Standard', 'Basic room for 2 people', 500000, 2, 1),
+-- ('Deluxe', 'Larger room with balcony', 800000, 3, 2),
+-- ('Suite', 'Luxury room with living area', 1500000, 4, 2),
+-- ('Family', 'Room for families', 1200000, 5, 3),
+-- ('VIP', 'Premium top-floor room', 2500000, 4, 2);
+
+-- INSERT INTO `Status` (Name, Type, Description) VALUES
+-- ('Available', 'Room', 'Room is empty'),
+-- ('Booked', 'Room', 'Customer booked but not checked in'),
+-- ('Occupied', 'Room', 'Currently used'),
+-- ('Cleaning', 'Room', 'Room is being cleaned'),
+-- ('Maintenance', 'Room', 'Room requires maintenance'),
+-- ('Reported', 'Incident', 'Issue reported'),
+-- ('In Progress', 'Incident', 'Staff fixing problem'),
+-- ('Resolved', 'Incident', 'Issue resolved');
+
+-- INSERT INTO Room (RoomNumber, RoomTypeID, StatusID) VALUES
+-- ('A101', 1, 1),
+-- ('A102', 1, 1),
+-- ('B201', 2, 1),
+-- ('B202', 3, 1),
+-- ('C301', 5, 1);
+
+-- INSERT INTO `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
+-- (1, '2024-12-01 12:00:00', '2024-12-02 12:00:00', '2024-12-01 10:00:00', 'Paid'),
+-- (2, '2024-12-02 14:00:00', '2024-12-03 11:00:00', '2024-12-02 12:30:00', 'Pending'),
+-- (3, '2024-12-03 15:00:00', '2024-12-04 12:00:00', '2024-12-03 15:00:00', 'Paid'),
+-- (4, '2024-12-04 16:00:00', '2024-12-05 10:00:00', NULL, 'Unpaid'),
+-- (5, '2024-12-05 08:00:00', '2024-12-06 12:00:00', '2024-12-05 09:00:00', 'Paid');
+
+-- INSERT INTO TransactionRoom (TransactionID, RoomID)
+-- VALUES
+-- (1, 1),
+-- (2, 2),
+-- (3, 3),
+-- (4, 4),
+-- (5, 5);
+
+-- INSERT INTO Review (CustomerID, RoomID, Rating, ReviewText) VALUES
+-- (1, 1, 4, 'Nice room, comfortable bed'),
+-- (2, 2, 5, 'Excellent stay!'),
+-- (3, 3, 3, 'Average experience'),
+-- (4, 4, 2, 'Room was noisy'),
+-- (5, 5, 5, 'Amazing luxury experience');
+
+-- INSERT INTO Incident (CustomerID, RoomID, StatusID, Description) VALUES
+-- (1, 1, 6, 'Broken lamp'),
+-- (2, 2, 7, 'Air conditioner broken'),
+-- (3, 3, 8, 'Shower fixed'),
+-- (4, 4, 4, 'Room needs cleaning'),
+-- (5, 5, 5, 'TV requires maintenance');
+
+-- select * from Customer
+-- select * from RoomType
+-- select * from Room where RoomTypeID = 1
+-- select * from TransactionRoom
+-- select * from Transaction
+
+-- truncate TransactionRoom
+-- truncate Transaction
+
+-- insert into `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
+-- (1, '2025-12-01 12:00:00', '2025-12-02 12:00:00', NULL, 'Paid')
+
 INSERT INTO Role (Name, Description) VALUES
 ('Customer', 'Normal hotel customer'),
 ('Staff', 'Hotel staff member'),
@@ -129,6 +215,8 @@ INSERT INTO `Status` (Name, Type, Description) VALUES
 ('Available', 'Room', 'Room is empty'),
 ('Booked', 'Room', 'Customer booked but not checked in'),
 ('Occupied', 'Room', 'Currently used'),
+('Need Clean', 'Room', 'Room need clean'),
+('Wait Check Clean', 'Room', 'Wait to clean'),
 ('Cleaning', 'Room', 'Room is being cleaned'),
 ('Maintenance', 'Room', 'Room requires maintenance'),
 ('Reported', 'Incident', 'Issue reported'),
@@ -138,24 +226,17 @@ INSERT INTO `Status` (Name, Type, Description) VALUES
 INSERT INTO Room (RoomNumber, RoomTypeID, StatusID) VALUES
 ('A101', 1, 1),
 ('A102', 1, 1),
-('B201', 2, 1),
-('B202', 3, 1),
-('C301', 5, 1);
+('B201', 2, 4),
+('B202', 3, 4),
+('C302', 5, 4);
+
 
 INSERT INTO `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
 (1, '2024-12-01 12:00:00', '2024-12-02 12:00:00', '2024-12-01 10:00:00', 'Paid'),
-(2, '2024-12-02 14:00:00', '2024-12-03 11:00:00', '2024-12-02 12:30:00', 'Pending'),
-(3, '2024-12-03 15:00:00', '2024-12-04 12:00:00', '2024-12-03 15:00:00', 'Paid'),
+(2,  '2024-12-02 14:00:00', '2024-12-03 11:00:00', '2024-12-02 12:30:00', 'Paid'),
+(3,  '2024-12-03 15:00:00', '2024-12-04 12:00:00', '2024-12-03 15:00:00', 'Paid'),
 (4, '2024-12-04 16:00:00', '2024-12-05 10:00:00', NULL, 'Unpaid'),
-(5, '2024-12-05 08:00:00', '2024-12-06 12:00:00', '2024-12-05 09:00:00', 'Paid');
-
-INSERT INTO TransactionRoom (TransactionID, RoomID)
-VALUES
-(1, 1),
-(2, 2),
-(3, 3),
-(4, 4),
-(5, 5);
+(5, '2024-12-05 08:00:00', '2024-12-06 12:00:00', '2024-12-05 09:00:00', 'Unpaid');
 
 INSERT INTO Review (CustomerID, RoomID, Rating, ReviewText) VALUES
 (1, 1, 4, 'Nice room, comfortable bed'),
@@ -171,17 +252,20 @@ INSERT INTO Incident (CustomerID, RoomID, StatusID, Description) VALUES
 (4, 4, 4, 'Room needs cleaning'),
 (5, 5, 5, 'TV requires maintenance');
 
--- select * from Customer
--- select * from RoomType
--- select * from Room where RoomTypeID = 1
--- select * from TransactionRoom
--- select * from Transaction
+-- Giao dịch 1 (Khách 1) đặt Phòng 1 (A101)
+INSERT INTO TransactionRoom (TransactionID, RoomID) VALUES (1, 1);
 
--- truncate TransactionRoom
--- truncate Transaction
+-- Giao dịch 2 (Khách 2) đặt Phòng 2 (A102)
+INSERT INTO TransactionRoom (TransactionID, RoomID) VALUES (2, 2);
 
--- insert into `Transaction` (CustomerID, CheckIn, CheckOut, PaidAt, Status) VALUES
--- (1, '2025-12-01 12:00:00', '2025-12-02 12:00:00', NULL, 'Paid')
+-- Giao dịch 3 (Khách 3) đặt Phòng 3 (B201)
+INSERT INTO TransactionRoom (TransactionID, RoomID) VALUES (3, 3);
+
+-- Giao dịch 4 (Khách 4) đặt Phòng 4 (B202)
+INSERT INTO TransactionRoom (TransactionID, RoomID) VALUES (4, 4);
+
+-- Giao dịch 5 (Khách 5) đặt Phòng 5 (C301)
+INSERT INTO TransactionRoom (TransactionID, RoomID) VALUES (5, 5);
 
 
 DELIMITER //
